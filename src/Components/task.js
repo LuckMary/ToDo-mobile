@@ -2,7 +2,9 @@ import React from 'react'
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-const Task = ({ task, toggleTask1, deleteTask }) => {
+const Task = ({ task, toggleTask, deleteTask, navigation }) => {
+  const { name, description } = JSON.parse(task.name)
+
   return (
     <View
       style={{
@@ -18,7 +20,7 @@ const Task = ({ task, toggleTask1, deleteTask }) => {
       >
         <TouchableOpacity
           onPress={() => {
-            toggleTask1(task.id)
+            toggleTask(task.id)
           }}
           style={[
             styles.complete,
@@ -29,19 +31,31 @@ const Task = ({ task, toggleTask1, deleteTask }) => {
           ]}
           activeOpacity={0.5}
         >
-          <Icon name="check" size={20} color="white"></Icon>
+          <Icon name="check" size={20} color="white" />
         </TouchableOpacity>
-        <Text
-          style={{
-            marginLeft: 16,
-            marginTop: 3,
-            width: '75%',
-            fontSize: 16,
-            textDecorationLine: task.isCompleted ? 'line-through' : 'none'
-          }}
+
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={() =>
+            navigation.navigate('ViewScreen', {
+              name,
+              description
+            })
+          }
+          style={{ width: '75%' }}
         >
-          {task.name}
-        </Text>
+          <Text
+            style={{
+              marginLeft: 16,
+              marginTop: 3,
+              width: '100%',
+              fontSize: 16,
+              textDecorationLine: task.isCompleted ? 'line-through' : 'none'
+            }}
+          >
+            {name}
+          </Text>
+        </TouchableOpacity>
       </View>
 
       <TouchableOpacity
@@ -51,7 +65,7 @@ const Task = ({ task, toggleTask1, deleteTask }) => {
         style={styles.delete}
         activeOpacity={0.5}
       >
-        <Icon name="close" size={20} color="white"></Icon>
+        <Icon name="close" size={20} color="white" />
       </TouchableOpacity>
     </View>
   )
